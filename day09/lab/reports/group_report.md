@@ -1,162 +1,55 @@
-# Báo Cáo Nhóm — Lab Day 09: Multi-Agent Orchestration
+# Bao Cao Nhom - Lab Day 09: Multi-Agent Orchestration
 
-**Tên nhóm:** ___________  
-**Thành viên:**
-| Tên | Vai trò | Email |
-|-----|---------|-------|
-| ___ | Supervisor Owner | ___ |
-| ___ | Worker Owner | ___ |
-| ___ | MCP Owner | ___ |
-| ___ | Trace & Docs Owner | ___ |
+**Ten nhom:** Day09 Lab
+**Thanh vien:**
 
-**Ngày nộp:** ___________  
-**Repo:** ___________  
-**Độ dài khuyến nghị:** 600–1000 từ
+| Ten                 | Vai tro                                     | MSV         |
+| ------------------- | ------------------------------------------- | ----------- |
+| Pham Ngoc Hai Duong | Supervisor, Worker, MCP, Trace & Docs Owner | 2A202600629 |
 
----
+**Ngay nop:** 2026-06-09
+**Repo:** `Lecture-Day-08-09-10/day09/lab`
 
-> **Hướng dẫn nộp group report:**
-> 
-> - File này nộp tại: `reports/group_report.md`
-> - Deadline: Được phép commit **sau 18:00** (xem SCORING.md)
-> - Tập trung vào **quyết định kỹ thuật cấp nhóm** — không trùng lặp với individual reports
-> - Phải có **bằng chứng từ code/trace** — không mô tả chung chung
-> - Mỗi mục phải có ít nhất 1 ví dụ cụ thể từ code hoặc trace thực tế của nhóm
+## 1. Kien Truc Da Xay Dung
 
----
+Nhom xay dung he Supervisor-Worker gom mot supervisor trong `graph.py` va ba worker chinh: retrieval, policy/tool, synthesis. Supervisor doc cau hoi, gan `supervisor_route`, `route_reason`, `risk_high`, `needs_tool`, sau do dieu phoi. Cac cau SLA, FAQ, HR di qua `retrieval_worker`; cac cau refund/access/exception di qua `policy_tool_worker`; moi cau ket thuc o `synthesis_worker` de tao answer co citation va confidence.
 
-## 1. Kiến trúc nhóm đã xây dựng (150–200 từ)
+Retrieval dung lexical search tren 5 tai lieu local trong `data/docs`, giup lab chay offline khong can API key hay Chroma. Policy worker xu ly Flash Sale, license/subscription, activated product, temporal scoping truoc 01/02/2026 va access Level 2/3. MCP server mock co `search_kb`, `get_ticket_info`, `check_access_permission`, `create_ticket`; trace q13/q15 co goi tool access permission.
 
-> Mô tả ngắn gọn hệ thống nhóm: bao nhiêu workers, routing logic hoạt động thế nào,
-> MCP tools nào được tích hợp. Dùng kết quả từ `docs/system_architecture.md`.
+## 2. Quyet Dinh Ky Thuat Quan Trong
 
-**Hệ thống tổng quan:**
+Quyet dinh quan trong nhat la chon deterministic retrieval + rule-based synthesis thay vi goi LLM. Van de ban dau la skeleton phu thuoc embedding/Chroma/API key; neu thieu dependency thi retrieval co the rong hoac random, dan den trace kho cham. Phuong an LLM linh hoat hon nhung ton API key va kho on dinh trong lab. Phuong an lexical/rule-based kem tong quat hon, nhung chay duoc tren Windows local, khong hallucinate, va phu hop 15 cau test co domain ro.
 
-_________________
+Bang chung tu trace:
 
-**Routing logic cốt lõi:**
-> Mô tả logic supervisor dùng để quyết định route (keyword matching, LLM classifier, rule-based, v.v.)
-
-_________________
-
-**MCP tools đã tích hợp:**
-> Liệt kê tools đã implement và 1 ví dụ trace có gọi MCP tool.
-
-- `search_kb`: ___________________
-- `get_ticket_info`: ___________________
-- ___________________: ___________________
-
----
-
-## 2. Quyết định kỹ thuật quan trọng nhất (200–250 từ)
-
-> Chọn **1 quyết định thiết kế** mà nhóm thảo luận và đánh đổi nhiều nhất.
-> Phải có: (a) vấn đề gặp phải, (b) các phương án cân nhắc, (c) lý do chọn phương án đã chọn.
-
-**Quyết định:** ___________________
-
-**Bối cảnh vấn đề:**
-
-_________________
-
-**Các phương án đã cân nhắc:**
-
-| Phương án | Ưu điểm | Nhược điểm |
-|-----------|---------|-----------|
-| ___ | ___ | ___ |
-| ___ | ___ | ___ |
-
-**Phương án đã chọn và lý do:**
-
-_________________
-
-**Bằng chứng từ trace/code:**
-> Dẫn chứng cụ thể (VD: route_reason trong trace, đoạn code, v.v.)
-
-```
-[NHÓM ĐIỀN VÀO ĐÂY — ví dụ trace hoặc code snippet]
+```text
+total_traces: 15
+routing_distribution: retrieval_worker 8/15, policy_tool_worker 7/15
+avg_confidence: 0.837
+avg_latency_ms: 114
+mcp_usage_rate: 7/15
 ```
 
----
+Vi du q13 route vao `policy_tool_worker` voi reason `task contains refund/access policy keyword; choose MCP-backed policy worker | risk_high flagged for trace visibility`, goi `search_kb`, `check_access_permission`, `get_ticket_info`, va tra loi Level 3 khong co emergency bypass.
 
-## 3. Kết quả grading questions (150–200 từ)
+## 3. Ket Qua Test Questions
 
-> Sau khi chạy pipeline với grading_questions.json (public lúc 17:00):
-> - Nhóm đạt bao nhiêu điểm raw?
-> - Câu nào pipeline xử lý tốt nhất?
-> - Câu nào pipeline fail hoặc gặp khó khăn?
+Chay `python eval_trace.py` voi `data/test_questions.json`: 15/15 cau thanh cong, khong crash. Cau xu ly tot nhat la q15 vi can cross-doc: SLA P1 notification va Level 2 emergency access. Trace ghi du hai worker `retrieval_worker -> policy_tool_worker -> synthesis_worker` va MCP tools.
 
-**Tổng điểm raw ước tính:** ___ / 96
+Cau abstain q09 duoc xu ly bang route retrieval va synthesis tra loi khong du thong tin ve `ERR-403-AUTH`, confidence 0.31. Cach nay tranh bia quy trinh khong co trong docs.
 
-**Câu pipeline xử lý tốt nhất:**
-- ID: ___ — Lý do tốt: ___________________
+Chua chay `grading_questions.json` vi file khong co san trong repo tai thoi diem lam lab. Khi file public, co the dung `python eval_trace.py --grading` de tao `artifacts/grading_run.jsonl`.
 
-**Câu pipeline fail hoặc partial:**
-- ID: ___ — Fail ở đâu: ___________________  
-  Root cause: ___________________
+## 4. So Sanh Day 08 vs Day 09
 
-**Câu gq07 (abstain):** Nhóm xử lý thế nào?
+Repo hien tai khong co Day 08 eval artifact de lay baseline thuc te, nen nhom khong tu bia metric Day 08. Day 09 co cac metric that: average confidence 0.837, average latency 114ms, MCP usage 46%, HITL 0%. Thay doi ro nhat la debuggability: moi trace co `route_reason`, `workers_called`, `worker_io_logs`, `mcp_tools_used`.
 
-_________________
+Multi-agent khong can thiet cho cau hoi don gian nhu "SLA P1 la bao lau"; retrieval-only la du. Nhung voi policy/access, viec tach worker giup thay ro exception va tool output. Vi du q07 license key bi chan boi policy exception, q13 Level 3 emergency co `check_access_permission` lam bang chung.
 
-**Câu gq09 (multi-hop khó nhất):** Trace ghi được 2 workers không? Kết quả thế nào?
+## 5. Phan Cong Va Danh Gia
 
-_________________
+Do lam ca nhan trong workspace nay, Pham Ngoc Hai Duong phu trach tat ca cac module: supervisor, workers, MCP integration, eval trace va docs/report. Diem lam tot la uu tien he chay duoc end-to-end va trace doc duoc. Diem con han che la synthesis rule-based chua tong quat nhu LLM grounded generation; neu cau hoi an dung cach dien dat qua khac keyword thi can cai tien retrieval/rerank.
 
----
+## 6. Neu Co Them 1 Ngay
 
-## 4. So sánh Day 08 vs Day 09 — Điều nhóm quan sát được (150–200 từ)
-
-> Dựa vào `docs/single_vs_multi_comparison.md` — trích kết quả thực tế.
-
-**Metric thay đổi rõ nhất (có số liệu):**
-
-_________________
-
-**Điều nhóm bất ngờ nhất khi chuyển từ single sang multi-agent:**
-
-_________________
-
-**Trường hợp multi-agent KHÔNG giúp ích hoặc làm chậm hệ thống:**
-
-_________________
-
----
-
-## 5. Phân công và đánh giá nhóm (100–150 từ)
-
-> Đánh giá trung thực về quá trình làm việc nhóm.
-
-**Phân công thực tế:**
-
-| Thành viên | Phần đã làm | Sprint |
-|------------|-------------|--------|
-| ___ | ___________________ | ___ |
-| ___ | ___________________ | ___ |
-| ___ | ___________________ | ___ |
-| ___ | ___________________ | ___ |
-
-**Điều nhóm làm tốt:**
-
-_________________
-
-**Điều nhóm làm chưa tốt hoặc gặp vấn đề về phối hợp:**
-
-_________________
-
-**Nếu làm lại, nhóm sẽ thay đổi gì trong cách tổ chức?**
-
-_________________
-
----
-
-## 6. Nếu có thêm 1 ngày, nhóm sẽ làm gì? (50–100 từ)
-
-> 1–2 cải tiến cụ thể với lý do có bằng chứng từ trace/scorecard.
-
-_________________
-
----
-
-*File này lưu tại: `reports/group_report.md`*  
-*Commit sau 18:00 được phép theo SCORING.md*
+Se them reranker nhe hoac BM25 chuan hon de tang precision source, va thay synthesis rule-based bang LLM grounded co guardrail "answer only from evidence". Ngoai ra se implement HITL checkpoint that cho cau `risk_high` co confidence thap.

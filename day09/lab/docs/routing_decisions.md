@@ -1,121 +1,60 @@
-# Routing Decisions Log — Lab Day 09
+# Routing Decisions Log - Lab Day 09
 
-**Nhóm:** ___________  
-**Ngày:** ___________
+**Nhom:** Day09 Lab  
+**Ngay:** 2026-06-09
 
-> **Hướng dẫn:** Ghi lại ít nhất **3 quyết định routing** thực tế từ trace của nhóm.
-> Không ghi giả định — phải từ trace thật (`artifacts/traces/`).
-> 
-> Mỗi entry phải có: task đầu vào → worker được chọn → route_reason → kết quả thực tế.
-
----
+Nguon: trace sinh tu `python eval_trace.py` trong `artifacts/traces/`.
 
 ## Routing Decision #1
 
-**Task đầu vào:**
-> _________________
+**Task dau vao:** "SLA xử lý ticket P1 là bao lâu?"
 
-**Worker được chọn:** `___________________`  
-**Route reason (từ trace):** `___________________`  
-**MCP tools được gọi:** _________________  
-**Workers called sequence:** _________________
+**Worker duoc chon:** `retrieval_worker`  
+**Route reason:** `task contains SLA/FAQ/HR retrieval keyword; MCP not required`  
+**MCP tools:** none  
+**Workers called:** `retrieval_worker -> synthesis_worker`
 
-**Kết quả thực tế:**
-- final_answer (ngắn): _________________
-- confidence: _________________
-- Correct routing? Yes / No
-
-**Nhận xét:** _(Routing này đúng hay sai? Nếu sai, nguyên nhân là gì?)_
-
-_________________
-
----
+**Ket qua:** Tra loi P1 first response 15 phut, resolution 4 gio, escalation 10 phut. Confidence `0.88`. Routing dung vi day la cau factual retrieval tu `sla_p1_2026.txt`.
 
 ## Routing Decision #2
 
-**Task đầu vào:**
-> _________________
+**Task dau vao:** "Sản phẩm kỹ thuật số (license key) có được hoàn tiền không?"
 
-**Worker được chọn:** `___________________`  
-**Route reason (từ trace):** `___________________`  
-**MCP tools được gọi:** _________________  
-**Workers called sequence:** _________________
+**Worker duoc chon:** `policy_tool_worker`  
+**Route reason:** `task contains refund/access policy keyword; choose MCP-backed policy worker`  
+**MCP tools:** `search_kb`  
+**Workers called:** `retrieval_worker -> policy_tool_worker -> synthesis_worker`
 
-**Kết quả thực tế:**
-- final_answer (ngắn): _________________
-- confidence: _________________
-- Correct routing? Yes / No
-
-**Nhận xét:**
-
-_________________
-
----
+**Ket qua:** Tra loi khong duoc hoan tien vi license/subscription la exception cua refund policy v4. Confidence `0.84`. Routing dung vi can policy exception detection, khong chi retrieve.
 
 ## Routing Decision #3
 
-**Task đầu vào:**
-> _________________
+**Task dau vao:** "Contractor cần Admin Access (Level 3) để khắc phục sự cố P1 đang active..."
 
-**Worker được chọn:** `___________________`  
-**Route reason (từ trace):** `___________________`  
-**MCP tools được gọi:** _________________  
-**Workers called sequence:** _________________
+**Worker duoc chon:** `policy_tool_worker`  
+**Route reason:** `task contains refund/access policy keyword; choose MCP-backed policy worker | risk_high flagged for trace visibility`  
+**MCP tools:** `search_kb`, `check_access_permission`, `get_ticket_info`  
+**Workers called:** `retrieval_worker -> policy_tool_worker -> synthesis_worker`
 
-**Kết quả thực tế:**
-- final_answer (ngắn): _________________
-- confidence: _________________
-- Correct routing? Yes / No
+**Ket qua:** Tra loi Level 3 khong co emergency bypass, van can Line Manager, IT Admin va IT Security. Confidence `0.88`. Routing dung vi cau nay vua co access policy vua co risk P1.
 
-**Nhận xét:**
+## Routing Decision #4
 
-_________________
+**Task dau vao:** "ERR-403-AUTH là lỗi gì và cách xử lý?"
 
----
+**Worker duoc chon:** `retrieval_worker`  
+**Route reason:** `unknown error code; retrieve first and abstain if no evidence`  
+**MCP tools:** none  
+**Workers called:** `retrieval_worker -> synthesis_worker`
 
-## Routing Decision #4 (tuỳ chọn — bonus)
+**Ket qua:** He thong abstain: khong du thong tin trong tai lieu noi bo ve ma loi nay. Confidence `0.31`. Day la routing kho vi co risk keyword `ERR-`, nhung chon retrieval truoc de tranh hallucination.
 
-**Task đầu vào:**
-> _________________
+## Tong Ket
 
-**Worker được chọn:** `___________________`  
-**Route reason:** `___________________`
+| Worker | So cau | Ty le |
+|---|---:|---:|
+| `retrieval_worker` | 8/15 | 53% |
+| `policy_tool_worker` | 7/15 | 46% |
+| `human_review` | 0/15 | 0% |
 
-**Nhận xét: Đây là trường hợp routing khó nhất trong lab. Tại sao?**
-
-_________________
-
----
-
-## Tổng kết
-
-### Routing Distribution
-
-| Worker | Số câu được route | % tổng |
-|--------|------------------|--------|
-| retrieval_worker | ___ | ___% |
-| policy_tool_worker | ___ | ___% |
-| human_review | ___ | ___% |
-
-### Routing Accuracy
-
-> Trong số X câu nhóm đã chạy, bao nhiêu câu supervisor route đúng?
-
-- Câu route đúng: ___ / ___
-- Câu route sai (đã sửa bằng cách nào?): ___
-- Câu trigger HITL: ___
-
-### Lesson Learned về Routing
-
-> Quyết định kỹ thuật quan trọng nhất nhóm đưa ra về routing logic là gì?  
-> (VD: dùng keyword matching vs LLM classifier, threshold confidence cho HITL, v.v.)
-
-1. ___________________
-2. ___________________
-
-### Route Reason Quality
-
-> Nhìn lại các `route_reason` trong trace — chúng có đủ thông tin để debug không?  
-> Nếu chưa, nhóm sẽ cải tiến format route_reason thế nào?
-
-_________________
+Routing accuracy tren `test_questions.json`: 15/15 cau chay thanh cong; cac route quan trong khop expected intent. Route reason du de debug vi ghi ca signal chon worker va risk flag.
