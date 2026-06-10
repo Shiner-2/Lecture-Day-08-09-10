@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass
+from datetime import datetime
 from typing import Any, Dict, List, Tuple
 
 
@@ -17,6 +18,26 @@ class ExpectationResult:
     passed: bool
     severity: str  # "warn" | "halt"
     detail: str
+
+
+REQUIRED_GRADING_DOC_IDS = {
+    "policy_refund_v4",
+    "sla_p1_2026",
+    "it_helpdesk_faq",
+    "hr_leave_policy",
+    "access_control_sop",
+}
+
+
+def _is_iso_datetime(raw: str) -> bool:
+    s = (raw or "").strip()
+    if not s:
+        return False
+    try:
+        datetime.fromisoformat(s.replace("Z", "+00:00"))
+        return True
+    except ValueError:
+        return False
 
 
 def run_expectations(cleaned_rows: List[Dict[str, Any]]) -> Tuple[List[ExpectationResult], bool]:
@@ -109,6 +130,52 @@ def run_expectations(cleaned_rows: List[Dict[str, Any]]) -> Tuple[List[Expectati
             ok6,
             "halt",
             f"violations={len(bad_hr_annual)}",
+        )
+    )
+
+    present_doc_ids = {str(r.get("doc_id") or "").strip() for r in cleaned_rows}
+    missing_required = sorted(REQUIRED_GRADING_DOC_IDS - present_doc_ids)
+    results.append(
+        ExpectationResult(
+            "required_grading_doc_coverage",
+            len(missing_required) == 0,
+            "halt",
+            f"missing_doc_ids={missing_required}",
+        )
+    )
+
+    chunk_ids = [str(r.get("chunk_id") or "").strip() for r in cleaned_rows]
+    duplicate_chunk_id_count = len(chunk_ids) - len(set(chunk_ids))
+    results.append(
+        ExpectationResult(
+            "unique_chunk_id",
+            duplicate_chunk_id_count == 0,
+            "halt",
+            f"duplicate_chunk_ids={duplicate_chunk_id_count}",
+        )
+    )
+
+    bad_exported = [r for r in cleaned_rows if not _is_iso_datetime(str(r.get("exported_at") or ""))]
+    results.append(
+        ExpectationResult(
+            "exported_at_iso_datetime",
+            len(bad_exported) == 0,
+            "halt",
+            f"invalid_exported_at={len(bad_exported)}",
+        )
+    )
+
+    ambiguous = [
+        r
+        for r in cleaned_rows
+        if (r.get("chunk_text") or "").strip().lower().startswith("nội dung không rõ ràng:")
+    ]
+    results.append(
+        ExpectationResult(
+            "no_ambiguous_chunk_text",
+            len(ambiguous) == 0,
+            "warn",
+            f"ambiguous_chunks={len(ambiguous)}",
         )
     )
 

@@ -10,6 +10,7 @@ from __future__ import annotations
 import csv
 import hashlib
 import re
+from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
@@ -20,11 +21,13 @@ ALLOWED_DOC_IDS = frozenset(
         "sla_p1_2026",
         "it_helpdesk_faq",
         "hr_leave_policy",
+        "access_control_sop",
     }
 )
 
 _ISO_DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 _DMY_SLASH = re.compile(r"^(\d{2})/(\d{2})/(\d{4})$")
+_AMBIGUOUS_PREFIXES = ("nội dung không rõ ràng:", "noi dung khong ro rang:")
 
 
 def _norm_text(s: str) -> str:
@@ -51,6 +54,17 @@ def _normalize_effective_date(raw: str) -> Tuple[str, str]:
         dd, mm, yyyy = m.group(1), m.group(2), m.group(3)
         return f"{yyyy}-{mm}-{dd}", ""
     return "", "invalid_effective_date_format"
+
+
+def _valid_exported_at(raw: str) -> bool:
+    s = (raw or "").strip()
+    if not s:
+        return False
+    try:
+        datetime.fromisoformat(s.replace("Z", "+00:00"))
+        return True
+    except ValueError:
+        return False
 
 
 def load_raw_csv(path: Path) -> List[Dict[str, str]]:
@@ -93,6 +107,10 @@ def clean_rows(
             quarantine.append({**raw, "reason": "unknown_doc_id"})
             continue
 
+        if not _valid_exported_at(exported_at):
+            quarantine.append({**raw, "reason": "invalid_exported_at", "exported_at_raw": exported_at})
+            continue
+
         eff_norm, eff_err = _normalize_effective_date(eff_raw)
         if eff_err == "empty_effective_date":
             quarantine.append({**raw, "reason": "missing_effective_date"})
@@ -115,7 +133,18 @@ def clean_rows(
             quarantine.append({**raw, "reason": "missing_chunk_text"})
             continue
 
-        key = _norm_text(text)
+        normalized_text = _norm_text(text)
+        if any(normalized_text.startswith(prefix) for prefix in _AMBIGUOUS_PREFIXES):
+            quarantine.append({**raw, "reason": "ambiguous_chunk_text"})
+            continue
+
+        if doc_id == "hr_leave_policy" and (
+            "10 ngày phép năm" in normalized_text or "10 ngày làm việc phép năm" in normalized_text
+        ):
+            quarantine.append({**raw, "reason": "stale_hr_policy_text"})
+            continue
+
+        key = normalized_text
         if key in seen_text:
             quarantine.append({**raw, "reason": "duplicate_chunk_text"})
             continue

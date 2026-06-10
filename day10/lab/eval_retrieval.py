@@ -37,13 +37,6 @@ def main() -> int:
     parser.add_argument("--top-k", type=int, default=3)
     args = parser.parse_args()
 
-    try:
-        import chromadb
-        from chromadb.utils import embedding_functions
-    except ImportError:
-        print("Install: pip install chromadb sentence-transformers", file=sys.stderr)
-        return 1
-
     qpath = Path(args.questions)
     if not qpath.is_file():
         print(f"questions not found: {qpath}", file=sys.stderr)
@@ -53,14 +46,23 @@ def main() -> int:
     db_path = os.environ.get("CHROMA_DB_PATH", str(ROOT / "chroma_db"))
     collection_name = os.environ.get("CHROMA_COLLECTION", "day10_kb")
     model_name = os.environ.get("EMBEDDING_MODEL", "all-MiniLM-L6-v2")
+    backend = os.environ.get("DAY10_EMBED_BACKEND", "local").strip().lower()
+    col = None
+    if backend == "chroma":
+        try:
+            import chromadb
+            from chromadb.utils import embedding_functions
+        except ImportError:
+            print("Install: pip install chromadb sentence-transformers", file=sys.stderr)
+            return 1
 
-    client = chromadb.PersistentClient(path=db_path)
-    emb = embedding_functions.SentenceTransformerEmbeddingFunction(model_name=model_name)
-    try:
-        col = client.get_collection(name=collection_name, embedding_function=emb)
-    except Exception as e:
-        print(f"Collection error: {e}", file=sys.stderr)
-        return 2
+        client = chromadb.PersistentClient(path=db_path)
+        emb = embedding_functions.SentenceTransformerEmbeddingFunction(model_name=model_name)
+        try:
+            col = client.get_collection(name=collection_name, embedding_function=emb)
+        except Exception as e:
+            print(f"Collection error: {e}", file=sys.stderr)
+            return 2
 
     out_path = Path(args.out)
     out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -80,9 +82,16 @@ def main() -> int:
         w.writeheader()
         for q in questions:
             text = q["question"]
-            res = col.query(query_texts=[text], n_results=args.top_k)
-            docs = (res.get("documents") or [[]])[0]
-            metas = (res.get("metadatas") or [[]])[0]
+            if backend == "chroma":
+                res = col.query(query_texts=[text], n_results=args.top_k)
+                docs = (res.get("documents") or [[]])[0]
+                metas = (res.get("metadatas") or [[]])[0]
+            else:
+                from retrieval_backend import local_query
+
+                hits = local_query(text, top_k=args.top_k, collection_name=collection_name)
+                docs = [h.get("chunk_text", "") for h in hits]
+                metas = [{"doc_id": h.get("doc_id", "")} for h in hits]
             top_doc = (metas[0] or {}).get("doc_id", "") if metas else ""
             preview = (docs[0] or "")[:180].replace("\n", " ") if docs else ""
             blob = " ".join(docs).lower()

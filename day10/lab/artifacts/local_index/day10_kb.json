@@ -1,0 +1,264 @@
+{
+  "run_id": "final-pass",
+  "rows": [
+    {
+      "chunk_id": "policy_refund_v4_1_0655e373028a71f6",
+      "doc_id": "policy_refund_v4",
+      "chunk_text": "Yêu cầu hoàn tiền được chấp nhận trong vòng 7 ngày làm việc kể từ xác nhận đơn. [cleaned: stale_refund_window]",
+      "effective_date": "2025-03-14",
+      "exported_at": "2026-04-06T00:00:00"
+    },
+    {
+      "chunk_id": "it_helpdesk_faq_2_b49d2cb54042efb2",
+      "doc_id": "it_helpdesk_faq",
+      "chunk_text": "Tài khoản bị khóa sau 5 lần đăng nhập sai liên tiếp.",
+      "effective_date": "2025-08-30",
+      "exported_at": "2026-04-07T00:00:00"
+    },
+    {
+      "chunk_id": "sla_p1_2026_3_ab622211ba880896",
+      "doc_id": "sla_p1_2026",
+      "chunk_text": "Ticket P1 có SLA phản hồi ban đầu 15 phút và resolution trong 4 giờ.",
+      "effective_date": "2025-07-15",
+      "exported_at": "2026-04-04T00:00:00"
+    },
+    {
+      "chunk_id": "policy_refund_v4_4_804bf57cfc9b4d4c",
+      "doc_id": "policy_refund_v4",
+      "chunk_text": "Yêu cầu được gửi trong vòng 7 ngày làm việc kể từ thời điểm xác nhận đơn hàng.",
+      "effective_date": "2026-03-30",
+      "exported_at": "2026-04-02T00:00:00"
+    },
+    {
+      "chunk_id": "policy_refund_v4_5_e635e3a983bea076",
+      "doc_id": "policy_refund_v4",
+      "chunk_text": "Yêu cầu được gửi trong vòng 7 ngày làm việc làm việc làm việc kể từ thời điểm xác nhận đơn hàng.",
+      "effective_date": "2025-12-14",
+      "exported_at": "2026-04-03T00:00:00"
+    },
+    {
+      "chunk_id": "policy_refund_v4_6_abaf56c5c607ef86",
+      "doc_id": "policy_refund_v4",
+      "chunk_text": "Yêu cầu được gửi trong vòng 7 ngày làm việc kể từ thời điểm xác nhận đơn hàng. Yêu cầu được gửi trong vòng 7 ngày làm việc kể từ thời điểm xác nhận đơn hàng. Yêu cầu được gửi trong vòng 7 ngày làm việc kể từ thời điểm xác nhận đơn hàng. Yêu cầu được gửi trong vòng 7 ngày làm việc kể từ thời điểm xác nhận đơn hàng. Yêu cầu được gửi trong vòng 7 ngày làm việc kể từ thời điểm xác nhận đơn hàng.",
+      "effective_date": "2025-02-19",
+      "exported_at": "2026-04-07T00:00:00"
+    },
+    {
+      "chunk_id": "it_helpdesk_faq_7_8481f3728e077352",
+      "doc_id": "it_helpdesk_faq",
+      "chunk_text": "Tài khoản bị khóa sau 5 lần đăng nhập sai liên tiếp. Chú ý: effective_date không đồng nhất giữa các nguồn.",
+      "effective_date": "2025-02-24",
+      "exported_at": "2026-04-05T00:00:00"
+    },
+    {
+      "chunk_id": "it_helpdesk_faq_8_492cbec9420310fc",
+      "doc_id": "it_helpdesk_faq",
+      "chunk_text": "FAQ bổ sung: đổi mật khẩu qua portal self-service có thể mất tối đa 24 giờ để đồng bộ toàn hệ thống.",
+      "effective_date": "2025-05-29",
+      "exported_at": "2026-04-08T00:00:00"
+    },
+    {
+      "chunk_id": "policy_refund_v4_9_9e8ceedc122ddb23",
+      "doc_id": "policy_refund_v4",
+      "chunk_text": "!!!Yêu cầu hoàn tiền được chấp nhận trong vòng 7 ngày làm việc kể từ xác nhận đơn. [cleaned: stale_refund_window]",
+      "effective_date": "2025-04-01",
+      "exported_at": "2026-04-07T00:00:00"
+    },
+    {
+      "chunk_id": "policy_refund_v4_10_fd86aab33b7d3c20",
+      "doc_id": "policy_refund_v4",
+      "chunk_text": "Yêu cầu được gửi trong vòng 7 ngày làm việc làm việc kể từ thời điểm xác nhận đơn hàng.",
+      "effective_date": "2025-11-24",
+      "exported_at": "2026-04-06T00:00:00"
+    },
+    {
+      "chunk_id": "policy_refund_v4_11_461701273106f43c",
+      "doc_id": "policy_refund_v4",
+      "chunk_text": "Yêu cầu được gửi trong vòng 7 ngày làm việc kể từ thời điểm xác nhận đơn hàng. Nội dung có thể bị trùng do sync lại dữ liệu.",
+      "effective_date": "2025-10-26",
+      "exported_at": "2026-04-02T00:00:00"
+    },
+    {
+      "chunk_id": "access_control_sop_12_63e7f4dca76508d7",
+      "doc_id": "access_control_sop",
+      "chunk_text": "Level 4 Admin Access yêu cầu phê duyệt bởi IT Manager và CISO. Thời gian xử lý: 5 ngày làm việc. Yêu cầu thêm: training bắt buộc về security policy.",
+      "effective_date": "2026-01-01",
+      "exported_at": "2026-04-08T00:00:00"
+    },
+    {
+      "chunk_id": "access_control_sop_13_7cb3ff12563955d9",
+      "doc_id": "access_control_sop",
+      "chunk_text": "Quyền Standard Access (Level 2) được xử lý trong 2 ngày làm việc sau khi Line Manager và IT Admin phê duyệt.",
+      "effective_date": "2026-01-01",
+      "exported_at": "2026-04-08T00:00:00"
+    },
+    {
+      "chunk_id": "access_control_sop_14_a6bcb171ea8ea857",
+      "doc_id": "access_control_sop",
+      "chunk_text": "Level 1 Read Only: phê duyệt bởi Line Manager. Thời gian xử lý: 1 ngày làm việc. Áp dụng cho nhân viên mới 30 ngày đầu.",
+      "effective_date": "2026-01-01",
+      "exported_at": "2026-04-09T00:00:00"
+    },
+    {
+      "chunk_id": "access_control_sop_15_5a8449d5dedd4494",
+      "doc_id": "access_control_sop",
+      "chunk_text": "Level 3 Elevated Access: phê duyệt bởi Line Manager + IT Admin + IT Security. Thời gian xử lý: 3 ngày làm việc.",
+      "effective_date": "2026-01-01",
+      "exported_at": "2026-04-09T00:00:00"
+    },
+    {
+      "chunk_id": "access_control_sop_16_13f50f005bec24a9",
+      "doc_id": "access_control_sop",
+      "chunk_text": "Escalation khẩn cấp: On-call IT Admin cấp quyền tạm thời max 24 giờ sau khi được Tech Lead phê duyệt.",
+      "effective_date": "2026-01-01",
+      "exported_at": "2026-04-10T00:00:00"
+    },
+    {
+      "chunk_id": "access_control_sop_17_6a0ac25c7fbbc4e1",
+      "doc_id": "access_control_sop",
+      "chunk_text": "IT Security thực hiện access review mỗi 6 tháng. Bất thường báo cáo lên CISO trong 24 giờ.",
+      "effective_date": "2025-03-25",
+      "exported_at": "2026-04-07T00:00:00"
+    },
+    {
+      "chunk_id": "policy_refund_v4_18_214164003769ef47",
+      "doc_id": "policy_refund_v4",
+      "chunk_text": "Ngoại lệ không được hoàn tiền: sản phẩm thuộc danh mục hàng kỹ thuật số (license key, subscription). Đơn hàng đã áp dụng mã giảm giá Flash Sale cũng không được hoàn.",
+      "effective_date": "2026-02-01",
+      "exported_at": "2026-04-08T00:00:00"
+    },
+    {
+      "chunk_id": "policy_refund_v4_19_babab7431e09b525",
+      "doc_id": "policy_refund_v4",
+      "chunk_text": "Finance Team xử lý hoàn tiền trong 3-5 ngày làm việc và thông báo kết quả cho khách hàng.",
+      "effective_date": "2026-02-01",
+      "exported_at": "2026-04-09T00:00:00"
+    },
+    {
+      "chunk_id": "policy_refund_v4_20_6d7a4d121362217f",
+      "doc_id": "policy_refund_v4",
+      "chunk_text": "CS Agent xem xét yêu cầu hoàn tiền trong vòng 1 ngày làm việc và xác nhận đủ điều kiện.",
+      "effective_date": "2026-02-01",
+      "exported_at": "2026-04-08T00:00:00"
+    },
+    {
+      "chunk_id": "policy_refund_v4_21_ecabac920b740fd9",
+      "doc_id": "policy_refund_v4",
+      "chunk_text": "Email liên hệ nội bộ cho chính sách hoàn tiền: cs-refund@company.internal. Hotline nội bộ: ext. 1234.",
+      "effective_date": "2026-02-01",
+      "exported_at": "2026-04-09T00:00:00"
+    },
+    {
+      "chunk_id": "policy_refund_v4_22_c3aca5463c96f8f3",
+      "doc_id": "policy_refund_v4",
+      "chunk_text": "Hoàn tiền qua phương thức thanh toán gốc hoặc store credit với giá trị 110% so với số tiền hoàn.",
+      "effective_date": "2026-02-01",
+      "exported_at": "2026-04-10T00:00:00"
+    },
+    {
+      "chunk_id": "sla_p1_2026_23_069b9905513095e0",
+      "doc_id": "sla_p1_2026",
+      "chunk_text": "Escalation P1: tự động escalate lên Senior Engineer nếu không có phản hồi trong 10 phút.",
+      "effective_date": "2026-01-15",
+      "exported_at": "2026-04-09T00:00:00"
+    },
+    {
+      "chunk_id": "sla_p1_2026_24_fc231516f0114c70",
+      "doc_id": "sla_p1_2026",
+      "chunk_text": "Thông báo stakeholder P1: update mỗi 30 phút cho đến khi resolve.",
+      "effective_date": "2026-01-15",
+      "exported_at": "2026-04-08T00:00:00"
+    },
+    {
+      "chunk_id": "sla_p1_2026_25_29e614189d6816e4",
+      "doc_id": "sla_p1_2026",
+      "chunk_text": "Kênh thông báo sự cố P1: Slack #incident-p1 và email incident@company.internal. PagerDuty tự động nhắn on-call.",
+      "effective_date": "2026-01-15",
+      "exported_at": "2026-04-10T00:00:00"
+    },
+    {
+      "chunk_id": "sla_p1_2026_26_fa98f87eb0a48de9",
+      "doc_id": "sla_p1_2026",
+      "chunk_text": "Ticket P2: phản hồi ban đầu 2 giờ và resolution 1 ngày làm việc. Escalation sau 90 phút không phản hồi.",
+      "effective_date": "2026-01-15",
+      "exported_at": "2026-04-08T00:00:00"
+    },
+    {
+      "chunk_id": "it_helpdesk_faq_27_14f6a88992ff760c",
+      "doc_id": "it_helpdesk_faq",
+      "chunk_text": "VPN: mỗi tài khoản được kết nối tối đa 2 thiết bị cùng lúc. Phần mềm sử dụng: Cisco AnyConnect.",
+      "effective_date": "2026-01-20",
+      "exported_at": "2026-04-09T00:00:00"
+    },
+    {
+      "chunk_id": "it_helpdesk_faq_28_6ddf12ac94990375",
+      "doc_id": "it_helpdesk_faq",
+      "chunk_text": "Mật khẩu phải được thay đổi mỗi 90 ngày. Hệ thống nhắc nhở 7 ngày trước khi hết hạn.",
+      "effective_date": "2026-01-20",
+      "exported_at": "2026-04-08T00:00:00"
+    },
+    {
+      "chunk_id": "it_helpdesk_faq_29_6f6498c39d6d1255",
+      "doc_id": "it_helpdesk_faq",
+      "chunk_text": "Quên mật khẩu: truy cập SSO portal hoặc liên hệ Helpdesk ext. 9000. Mật khẩu mới gửi qua email trong vòng 5 phút.",
+      "effective_date": "2026-01-20",
+      "exported_at": "2026-04-10T00:00:00"
+    },
+    {
+      "chunk_id": "it_helpdesk_faq_30_ab5b5056ba48fc48",
+      "doc_id": "it_helpdesk_faq",
+      "chunk_text": "Dung lượng hộp thư tiêu chuẩn là 50GB. Nếu đầy có thể xóa email cũ hoặc yêu cầu tăng dung lượng qua ticket IT-ACCESS.",
+      "effective_date": "2026-01-20",
+      "exported_at": "2026-04-09T00:00:00"
+    },
+    {
+      "chunk_id": "it_helpdesk_faq_31_5ff46c351cc0b0df",
+      "doc_id": "it_helpdesk_faq",
+      "chunk_text": "Laptop mới được cấp trong ngày onboarding đầu tiên. Liên hệ HR hoặc IT Admin nếu có vấn đề.",
+      "effective_date": "2026-01-20",
+      "exported_at": "2026-04-08T00:00:00"
+    },
+    {
+      "chunk_id": "hr_leave_policy_32_3d0a837374a08c61",
+      "doc_id": "hr_leave_policy",
+      "chunk_text": "Nhân viên từ 3 đến 5 năm kinh nghiệm được 15 ngày phép năm theo chính sách 2026.",
+      "effective_date": "2026-01-01",
+      "exported_at": "2026-04-09T00:00:00"
+    },
+    {
+      "chunk_id": "hr_leave_policy_33_d3ca086b24b56027",
+      "doc_id": "hr_leave_policy",
+      "chunk_text": "Nhân viên trên 5 năm kinh nghiệm được 18 ngày phép năm theo chính sách 2026.",
+      "effective_date": "2026-01-01",
+      "exported_at": "2026-04-10T00:00:00"
+    },
+    {
+      "chunk_id": "hr_leave_policy_34_0147a63d0f995701",
+      "doc_id": "hr_leave_policy",
+      "chunk_text": "Nghỉ ốm: 10 ngày/năm có trả lương. Cần giấy tờ y tế nếu nghỉ trên 3 ngày liên tiếp.",
+      "effective_date": "2026-01-01",
+      "exported_at": "2026-04-08T00:00:00"
+    },
+    {
+      "chunk_id": "hr_leave_policy_35_451219a7dfaf921c",
+      "doc_id": "hr_leave_policy",
+      "chunk_text": "Tối đa 5 ngày phép năm chưa dùng được chuyển sang năm tiếp theo.",
+      "effective_date": "2026-01-01",
+      "exported_at": "2026-04-09T00:00:00"
+    },
+    {
+      "chunk_id": "hr_leave_policy_36_84d457762b204551",
+      "doc_id": "hr_leave_policy",
+      "chunk_text": "Remote work: sau probation tối đa 2 ngày/tuần. Ngày onsite bắt buộc: Thứ 3 và Thứ 5.",
+      "effective_date": "2026-01-01",
+      "exported_at": "2026-04-10T00:00:00"
+    },
+    {
+      "chunk_id": "hr_leave_policy_37_68464d21ae277881",
+      "doc_id": "hr_leave_policy",
+      "chunk_text": "Nhân viên dưới 3 năm kinh nghiệm được 12 ngày phép năm theo chính sách 2026.",
+      "effective_date": "2026-01-01",
+      "exported_at": "2026-04-11T00:00:00"
+    }
+  ]
+}

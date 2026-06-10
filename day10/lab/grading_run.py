@@ -34,22 +34,24 @@ def main() -> int:
     p.add_argument("--top-k", type=int, default=5)
     args = p.parse_args()
 
-    try:
-        import chromadb
-        from chromadb.utils import embedding_functions
-    except ImportError:
-        print("pip install chromadb sentence-transformers", file=sys.stderr)
-        return 1
-
     qpath = Path(args.questions)
     qs = json.loads(qpath.read_text(encoding="utf-8"))
     db_path = os.environ.get("CHROMA_DB_PATH", str(ROOT / "chroma_db"))
     collection_name = os.environ.get("CHROMA_COLLECTION", "day10_kb")
     model_name = os.environ.get("EMBEDDING_MODEL", "all-MiniLM-L6-v2")
+    backend = os.environ.get("DAY10_EMBED_BACKEND", "local").strip().lower()
+    col = None
+    if backend == "chroma":
+        try:
+            import chromadb
+            from chromadb.utils import embedding_functions
+        except ImportError:
+            print("pip install chromadb sentence-transformers", file=sys.stderr)
+            return 1
 
-    client = chromadb.PersistentClient(path=db_path)
-    emb = embedding_functions.SentenceTransformerEmbeddingFunction(model_name=model_name)
-    col = client.get_collection(name=collection_name, embedding_function=emb)
+        client = chromadb.PersistentClient(path=db_path)
+        emb = embedding_functions.SentenceTransformerEmbeddingFunction(model_name=model_name)
+        col = client.get_collection(name=collection_name, embedding_function=emb)
 
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
@@ -57,9 +59,16 @@ def main() -> int:
     with out.open("w", encoding="utf-8") as f:
         for q in qs:
             text = q["question"]
-            res = col.query(query_texts=[text], n_results=args.top_k)
-            docs = (res.get("documents") or [[]])[0]
-            metas = (res.get("metadatas") or [[]])[0]
+            if backend == "chroma":
+                res = col.query(query_texts=[text], n_results=args.top_k)
+                docs = (res.get("documents") or [[]])[0]
+                metas = (res.get("metadatas") or [[]])[0]
+            else:
+                from retrieval_backend import local_query
+
+                hits = local_query(text, top_k=args.top_k, collection_name=collection_name)
+                docs = [h.get("chunk_text", "") for h in hits]
+                metas = [{"doc_id": h.get("doc_id", "")} for h in hits]
             blob = " ".join(docs).lower()
             must_any = [x.lower() for x in q.get("must_contain_any", [])]
             forbidden = [x.lower() for x in q.get("must_not_contain", [])]
